@@ -2,8 +2,9 @@ import pygame
 
 #Classe joueur
 class Player(pygame.sprite.Sprite):
-    def __init__(self):
+    def __init__(self, game):
         super().__init__()
+        self.game = game
         WIDTH = 1280
         HEIGHT = 720
         screen = pygame.display.set_mode([WIDTH, HEIGHT])
@@ -20,13 +21,13 @@ class Player(pygame.sprite.Sprite):
         self.rect.y = 357
     
     def move_right(self):
-        self.rect.x += self.velocity
+        self.rect.x += self.velocity / 5
 
     def move_left(self):
-        self.rect.x -= self.velocity
+        self.rect.x -= self.velocity / 5
 
     def move_up(self):
-        self.rect.y -= self.velocity
+        self.rect.y -= self.velocity / 5
 
     def move_down(self):
-        self.rect.y += self.velocity
+        self.rect.y += self.velocity / 5
