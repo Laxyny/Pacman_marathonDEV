@@ -733,27 +733,3 @@ class Ghost:
                 clyd_target = return_target
         return [blink_target, ink_target, pink_target, clyd_target]
 
-    
-    def ifmoving(blinky_x, blinky_y, inky_x, inky_y, pinky_x, pinky_y, clydy_x, clydy_y):
-        blinky = Ghost(blinky_x, blinky_y, targets[0], ghost_speeds[0], blinky_img, blinky_direction, blinky_dead,
-                       blinky_box, 0)
-        inky = Ghost(inky_x, inky_y, targets[1], ghost_speeds[1], inky_img, inky_direction, inky_dead,
-                        inky_box, 1)
-        pinky = Ghost(pinky_x, pinky_y, targets[2], ghost_speeds[2], pinky_img, pinky_direction, pinky_dead,
-                        pinky_box, 2)
-        clyde = Ghost(clyde_x, clyde_y, targets[3], ghost_speeds[3], clyde_img, clyde_direction, clyde_dead,)
-        if not blinky_dead and not blinky.in_box:
-            blinky_x, blinky_y, blinky_direction = blinky.move_blinky()
-        else:
-            blinky_x, blinky_y, blinky_direction = blinky.move_clyde()
-        if not pinky_dead and not pinky.in_box:
-            pinky_x, pinky_y, pinky_direction = pinky.move_pinky()
-        else:
-            pinky_x, pinky_y, pinky_direction = pinky.move_clyde()
-        if not inky_dead and not inky.in_box:
-            inky_x, inky_y, inky_direction = inky.move_inky()
-        else:
-            inky_x, inky_y, inky_direction = inky.move_clyde()
-        clyde_x, clyde_y, clyde_direction = clyde.move_clyde()
-    score, powerup, power_counter, eaten_ghost = check_collisions(score, powerup, power_counter, eaten_ghost)
-
