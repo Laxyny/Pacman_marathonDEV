@@ -1,4 +1,3 @@
-# Build Pac-Man from Scratch in Python with PyGame!!
 import copy
 import math
 
@@ -72,6 +71,7 @@ moving = False
 ghost_speeds = [2, 2, 2, 2]
 startup_counter = 0
 lives = 3
+
 game_over = False
 game_won = False
 
@@ -83,6 +83,8 @@ sound_eat = pygame.mixer.Sound('assets/music/pacman_eat.wav')
 sound_eatghost = pygame.mixer.Sound('assets/music/pacman_eatghost.wav')
 sound_death = pygame.mixer.Sound('assets/music/pacman_death.wav')
 sound_intermission = pygame.mixer.Sound('assets/music/pacman_intermission.wav')
+sound_game_over = pygame.mixer.Sound('assets/music/game_over.wav')
+sound_win = pygame.mixer.Sound('assets/music/win.wav')
 
 class Ghost:
     def __init__(self, x_coord, y_coord, target, speed, img, direct, dead, box, id):
@@ -685,11 +687,13 @@ def draw_misc():
     for i in range(lives):
         screen.blit(pygame.transform.scale(player_images[0], (30, 30)), (650 + i * 40, 915))
     if game_over:
+        sound_game_over.play(1)
         pygame.draw.rect(screen, 'white', [50, 200, 800, 300],0, 10)
         pygame.draw.rect(screen, 'dark gray', [70, 220, 760, 260], 0, 10)
         gameover_text = font.render('Perdu ! Espace pour recommencer', True, 'red')
         screen.blit(gameover_text, (100, 300))
     if game_won:
+        sound_win.play()
         pygame.draw.rect(screen, 'white', [50, 200, 800, 300],0, 10)
         pygame.draw.rect(screen, 'dark gray', [70, 220, 760, 260], 0, 10)
         gameover_text = font.render('Gagné ! Espace pour recommencer', True, 'green')
