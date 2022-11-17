@@ -96,8 +96,6 @@ def play():
     sound_eatghost = pygame.mixer.Sound('assets/music/pacman_eatghost.wav')
     sound_death = pygame.mixer.Sound('assets/music/pacman_death.wav')
     sound_intermission = pygame.mixer.Sound('assets/music/pacman_intermission.wav')
-    sound_game_over = pygame.mixer.Sound('assets/music/game_over.wav')
-    sound_win = pygame.mixer.Sound('assets/music/win.wav')
 
     class Ghost:
         def __init__(self, x_coord, y_coord, target, speed, img, direct, dead, box, id):
@@ -700,17 +698,9 @@ def play():
         for i in range(lives):
             screen.blit(pygame.transform.scale(player_images[0], (30, 30)), (650 + i * 40, 915))
         if game_over:
-            sound_game_over.play(1)
-            pygame.draw.rect(screen, 'white', [50, 200, 800, 300],0, 10)
-            pygame.draw.rect(screen, 'dark gray', [70, 220, 760, 260], 0, 10)
-            gameover_text = font.render('Perdu ! Espace pour recommencer', True, 'red')
-            screen.blit(gameover_text, (100, 300))
+            menu_Defaite()
         if game_won:
-            sound_win.play()
-            pygame.draw.rect(screen, 'white', [50, 200, 800, 300],0, 10)
-            pygame.draw.rect(screen, 'dark gray', [70, 220, 760, 260], 0, 10)
-            gameover_text = font.render('Gagné ! Espace pour recommencer', True, 'green')
-            screen.blit(gameover_text, (100, 300))
+            menu_victoire()
 
 
     def check_collisions(scor, power, power_count, eaten_ghosts):
@@ -1287,9 +1277,81 @@ def play():
 
         pygame.display.flip()
 
+def menu_victoire():
+    sound_win = pygame.mixer.Sound('assets/music/win.wav')
+    sound_win.play(1)
+    while True:
+        screen.blit(BG, (0, 0))
 
+        MENU_MOUSE_POS = pygame.mouse.get_pos()
+
+        MENU_TEXT = get_font(60).render("VICTOIRE !!!", True, "#06FF12")
+        MENU_RECT = MENU_TEXT.get_rect(center=(450, 350))
+
+        PLAY_BUTTON = Button(image=pygame.image.load("assets/images/Play Rect.png"), pos=(450, 650), 
+                            text_input="MENU", font=get_font(60), base_color="#FFFFFF", hovering_color="White")
+        QUIT_BUTTON = Button(image=pygame.image.load("assets/images/Quit Rect.png"), pos=(450, 800), 
+                            text_input="QUITTER", font=get_font(50), base_color="#FFFFFF", hovering_color="White")
+
+        screen.blit(MENU_TEXT, MENU_RECT)
+
+        for button in [PLAY_BUTTON, QUIT_BUTTON]:
+            button.changeColor(MENU_MOUSE_POS)
+            button.update(screen)
+        
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if PLAY_BUTTON.checkForInput(MENU_MOUSE_POS):
+                    sound_win.stop()
+                    main_menu()
+                if QUIT_BUTTON.checkForInput(MENU_MOUSE_POS):
+                    pygame.quit()
+                    sys.exit()
+
+        pygame.display.update()
+
+def menu_Defaite():
+    sound_game_over = pygame.mixer.Sound('assets/music/game_over.wav')
+    sound_game_over.play(1)
+    while True:
+        screen.blit(BG, (0, 0))
+
+        MENU_MOUSE_POS = pygame.mouse.get_pos()
+
+        MENU_TEXT = get_font(100).render("DEFAITE", True, "#FF0000")
+        MENU_RECT = MENU_TEXT.get_rect(center=(450, 350))
+
+        PLAY_BUTTON = Button(image=pygame.image.load("assets/images/Play Rect.png"), pos=(450, 650), 
+                            text_input="MENU", font=get_font(60), base_color="#FFFFFF", hovering_color="White")
+        QUIT_BUTTON = Button(image=pygame.image.load("assets/images/Quit Rect.png"), pos=(450, 800), 
+                            text_input="QUITTER", font=get_font(50), base_color="#FFFFFF", hovering_color="White")
+
+        screen.blit(MENU_TEXT, MENU_RECT)
+
+        for button in [PLAY_BUTTON, QUIT_BUTTON]:
+            button.changeColor(MENU_MOUSE_POS)
+            button.update(screen)
+        
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if PLAY_BUTTON.checkForInput(MENU_MOUSE_POS):
+                    sound_game_over.stop()
+                    main_menu()
+                if QUIT_BUTTON.checkForInput(MENU_MOUSE_POS):
+                    pygame.quit()
+                    sys.exit()
+
+        pygame.display.update()
 
 def main_menu():
+    pygame.mixer.music.load('assets/music/mainscreen.wav')
+    pygame.mixer.music.play()
     while True:
         screen.blit(BG, (0, 0))
 
@@ -1310,6 +1372,7 @@ def main_menu():
                 sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if PLAY_BUTTON.checkForInput(MENU_MOUSE_POS):
+                    pygame.mixer.music.stop()
                     play()
                 if QUIT_BUTTON.checkForInput(MENU_MOUSE_POS):
                     pygame.quit()
@@ -1318,4 +1381,3 @@ def main_menu():
         pygame.display.update()
 
 main_menu()
-pygame.quit()
