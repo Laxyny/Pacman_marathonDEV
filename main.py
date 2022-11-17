@@ -3,6 +3,7 @@ import copy
 import math
 
 import pygame
+from pygame import mixer
 
 from map_pacman import boards #Carte du jeu
 
@@ -74,6 +75,14 @@ lives = 3
 game_over = False
 game_won = False
 
+#Background music
+music_intro = pygame.mixer.music.load('assets/music/intro.wav')
+music_intro = pygame.mixer.music.play(1)
+
+sound_eat = pygame.mixer.Sound('assets/music/pacman_eat.wav')
+sound_eatghost = pygame.mixer.Sound('assets/music/pacman_eatghost.wav')
+sound_death = pygame.mixer.Sound('assets/music/pacman_death.wav')
+sound_intermission = pygame.mixer.Sound('assets/music/pacman_intermission.wav')
 
 class Ghost:
     def __init__(self, x_coord, y_coord, target, speed, img, direct, dead, box, id):
@@ -692,9 +701,11 @@ def check_collisions(scor, power, power_count, eaten_ghosts):
     num2 = WIDTH // 30
     if 0 < player_x < 870:
         if level[center_y // num1][center_x // num2] == 1:
+            sound_eat.play()
             level[center_y // num1][center_x // num2] = 0
             scor += 10
         if level[center_y // num1][center_x // num2] == 2:
+            sound_intermission.play(1)
             level[center_y // num1][center_x // num2] = 0
             scor += 50
             power = True
@@ -905,7 +916,7 @@ while run:
         power_counter = 0
         powerup = False
         eaten_ghost = [False, False, False, False]
-    if startup_counter < 180 and not game_over and not game_won:
+    if startup_counter < 280 and not game_over and not game_won:      
         moving = False
         startup_counter += 1
     else:
@@ -1003,6 +1014,9 @@ while run:
                 inky_dead = False
                 clyde_dead = False
                 pinky_dead = False
+                sound_death.play()
+                pygame.time.delay(3000)
+                music_intro = pygame.mixer.music.play()
             else:
                 game_over = True
                 moving = False
@@ -1034,6 +1048,9 @@ while run:
             inky_dead = False
             clyde_dead = False
             pinky_dead = False
+            sound_death.play()
+            pygame.time.delay(3000)
+            music_intro = pygame.mixer.music.play()
         else:
             game_over = True
             moving = False
@@ -1065,6 +1082,9 @@ while run:
             inky_dead = False
             clyde_dead = False
             pinky_dead = False
+            sound_death.play()
+            pygame.time.delay(3000)
+            music_intro = pygame.mixer.music.play()
         else:
             game_over = True
             moving = False
@@ -1096,6 +1116,8 @@ while run:
             inky_dead = False
             clyde_dead = False
             pinky_dead = False
+            sound_death.play()
+            pygame.time.delay(3000)
         else:
             game_over = True
             moving = False
@@ -1127,6 +1149,8 @@ while run:
             inky_dead = False
             clyde_dead = False
             pinky_dead = False
+            sound_death.play()
+            pygame.time.delay(3000)
         else:
             game_over = True
             moving = False
